@@ -2,7 +2,14 @@
   "scripts": {
     "postinstall": "tsc",
     "watch": "tsc --watch",
-    "test": "node dist/app"
+    "test": "tsc && jest --verbose"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/spec/**/*.[jt]s?(x)"
+    ],
+    "rootDir": "."
   },
   "dependencies": {
     "moo": "^0.5.0"
@@ -10,6 +17,7 @@
   "devDependencies": {
     "@types/moo": "^0.5.0",
     "@types/node": "^12.7.5",
+    "jest": "^24.9.0",
     "typescript": "^3.5.3"
   }
 }

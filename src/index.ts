@@ -1,11 +1,27 @@
-import moo = require("moo");
+import MooLexer = require('moo');
 
 const TOKEN_OP = 'OP';
 const TOKEN_KEY = 'KEY';
 const TOKEN_VALUE = 'VALUE';
 const TOKEN_FULLTEXT = 'FULLTEXT';
 
-export class Formula {
+export default {
+
+    parse: function(input: string, opts?: SearchBoxOptions) {
+        const keywords = opts ? (opts.keywords || []) : [];
+
+        const parser = new Parser();
+        const lexer = new Lexer(keywords, parser.parse.bind(parser));
+
+        lexer.lex(input);
+        return parser.getFormula();
+    }
+}
+
+/**
+ * Formula contains a list of literals.
+ */
+class Formula {
 
     private literals: Literal[] = [];
 
@@ -15,7 +31,7 @@ export class Formula {
             .find(literal => literal.op === op);
 
         if (!literal) {
-            literal = new Literal(key, [], op);
+            literal = {key, op, values: []};
             this.literals.push(literal);
         }
 
@@ -28,28 +44,15 @@ export class Formula {
 
     public toString(): string {
         return 'Formula:\n' + this.literals
-            .map(literal => ' ' + literal.toString())
+            .map(literal => ` ${literal.op ? literal.op : ''}${literal.key}: [${literal.values}]`)
             .join("\n");
     }
-}
-
-export type Operator = string | undefined;
-
-export class Literal {
-
-    public constructor(public key: string, public values: string[], public op?: Operator) {
-    }
-
-    public toString(): string {
-        return `${this.op ? this.op : ''}${this.key}: [${this.values}]`;
-    }
-
 }
 
 /**
  * Parser: parses tokens into a structured formula.
  */
-export class Parser {
+class Parser {
 
     private query: Formula = new Formula();
     private lastOp?: string;
@@ -63,7 +66,7 @@ export class Parser {
         this.query = new Formula();
     }
 
-    public parse(token: Token): void {
+    public parse(token: LexerToken): void {
         console.debug(`Parsing token #${token.type}# : #${token.value}#`);
 
         switch (token.type) {
@@ -95,12 +98,12 @@ export class Parser {
 /**
  * Lexer: tokenizer of user input into tokens (lexemes).
  */
-export class Lexer {
+class Lexer {
 
-    private readonly lexer: moo.Lexer;
-    private readonly handler: TokenHandler;
+    private readonly lexer: MooLexer.Lexer;
+    private readonly handler: LexerTokenHandler;
 
-    public constructor(keywords: string[], handler: TokenHandler) {
+    public constructor(keywords: string[], handler: LexerTokenHandler) {
         const operators = ['-'];
         this.handler = handler;
 
@@ -114,14 +117,14 @@ export class Lexer {
         const NON_WORD = /\W+/;
 
         // Define stateful grammar rules.
-        this.lexer = moo.states({
+        this.lexer = MooLexer.states({
             // Initial state: primarily we match keywords and operators here. The rest is fulltext.
             init: {
                 WS: WS,
                 [TOKEN_OP]: {match: OP},
                 [TOKEN_KEY]: {
                     match: keywords,
-                    type: moo.keywords({KEY: keywords}),
+                    type: MooLexer.keywords({KEY: keywords}),
                     push: 'pair'
                 },
                 [TOKEN_FULLTEXT]: [
@@ -154,7 +157,7 @@ export class Lexer {
                 case TOKEN_KEY:
                 case TOKEN_VALUE:
                 case TOKEN_FULLTEXT:
-                    this.emitTerm(token.type, token.value);
+                    this.emitToken(token.type, token.value);
                     break;
             }
 
@@ -162,14 +165,7 @@ export class Lexer {
         }
     }
 
-    protected emitTerm(type: string, value: string): void {
+    protected emitToken(type: string, value: string): void {
         this.handler({type, value});
     }
 }
-
-type Token = {
-    type: string,
-    value: string,
-}
-
-type TokenHandler = (term: Token) => void;

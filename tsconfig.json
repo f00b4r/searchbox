@@ -12,8 +12,7 @@
     "sourceMap": false,
     "declaration": true,
     "typeRoots": [
-      "./node_modules/@types",
-      "./src/_types"
+      "./node_modules/@types"
     ],
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
