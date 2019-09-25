@@ -1,4 +1,6 @@
 # Searchbox
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwebkitty%2Fsearchbox.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwebkitty%2Fsearchbox?ref=badge_shield)
+
 
 > A search box supporting multiple user-defined keywords (filters, variables).
 
@@ -27,3 +29,6 @@ const formula = searchbox.parse(inputText, {keywords});
 ```
 
 Please note that only **case-sensitive** keyword matching is currently supported.
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwebkitty%2Fsearchbox.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwebkitty%2Fsearchbox?ref=badge_large)
