@@ -18,7 +18,7 @@
   },
   "types": "src/types.d.ts",
   "scripts": {
-    "postinstall": "tsc",
+    "build": "tsc",
     "watch": "tsc --watch",
     "test": "jest --verbose --passWithNoTests",
     "test:coverage": "npm run test -- --coverage"
