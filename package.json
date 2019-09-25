@@ -2,7 +2,8 @@
   "scripts": {
     "postinstall": "tsc",
     "watch": "tsc --watch",
-    "test": "tsc && jest --verbose"
+    "test": "jest --verbose",
+    "coverage": "jest --ci --coverage"
   },
   "jest": {
     "testEnvironment": "node",

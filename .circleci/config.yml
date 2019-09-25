@@ -1,0 +1,27 @@
+version: 2.1
+
+jobs:
+  build:
+    working_directory: ~/webkitty-searchbox
+    docker:
+      - image: circleci/node:10
+    steps:
+      - checkout
+      - run:
+          name: update-npm
+          command: 'sudo npm install -g npm@latest'
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - run: # run install
+          name: install
+          command: npm install
+      - run: # run tests
+          name: test
+          command: npm run test
+      - run: # run coverage report
+          name: code-coverage
+          command: npm run coverage
+      - store_artifacts:
+          path: coverage
