@@ -8,20 +8,24 @@ jobs:
     steps:
       - checkout
       - run:
-          name: update-npm
+          name: Update NPM
           command: 'sudo npm install -g npm@latest'
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
-      - run: # run install
-          name: install
+      - run:
+          name: Install Dependencies
           command: npm install
-      - run: # run tests
-          name: test
-          command: npm run test
-      - run: # run coverage report
-          name: code-coverage
-          command: npm run coverage
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: Test with Code Coverage
+          command: npm run test:coverage --ci
+      - run:
+          name: Send Code Coverage Report
+          command: './node_modules/.bin/codecov'
       - store_artifacts:
           path: coverage

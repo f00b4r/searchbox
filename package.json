@@ -2,8 +2,8 @@
   "scripts": {
     "postinstall": "tsc",
     "watch": "tsc --watch",
-    "test": "jest --verbose",
-    "coverage": "jest --ci --coverage"
+    "test": "jest --verbose --passWithNoTests",
+    "test:coverage": "npm run test -- --coverage"
   },
   "jest": {
     "testEnvironment": "node",
@@ -13,6 +13,7 @@
     "rootDir": "."
   },
   "dependencies": {
+    "codecov": "^3.6.1",
     "moo": "github:no-context/moo#master"
   },
   "devDependencies": {
