@@ -2,28 +2,28 @@
  * Search box configuration options.
  */
 interface SearchBoxOptions {
-    /**
-     * Keywords (variables) to look for in the user input.
-     *
-     * By default no keywords are defined and everything is considered
-     * a fulltext search.
-     */
-    keywords?: string[],
+  /**
+   * Keywords (variables) to look for in the user input.
+   *
+   * By default no keywords are defined and everything is considered
+   * a fulltext search.
+   */
+  keywords?: string[],
 
-    // @todo: not supported yet in Moo https://github.com/no-context/moo/pull/122
-    // /**
-    //  * Whether the keywords search is case-sensitive.
-    //  */
-    // caseSensitive?: false,
+  // @todo: not supported yet in Moo https://github.com/no-context/moo/pull/122
+  // /**
+  //  * Whether the keywords search is case-sensitive.
+  //  */
+  // caseSensitive?: false,
 }
 
 /**
  * Search literal is a triplet of key, value and an optional operator.
  */
 interface Literal {
-    key: string,
-    values: string[],
-    op?: Operator,
+  key: string,
+  values: string[],
+  op?: Operator,
 }
 
 /**
@@ -35,8 +35,8 @@ type Operator = string;
  * Lexer token is a smallest bit of information that a Lexer can produce.
  */
 interface LexerToken {
-    type: string,
-    value: string,
+  type: string,
+  value: string,
 }
 
 /**
