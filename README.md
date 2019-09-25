@@ -41,3 +41,5 @@ Please note that only **case-sensitive** keyword matching is currently supported
 
 Copyright © 2019 [stuchl4n3k](https://github.com/stuchl4n3k).
 This project is [MIT](LICENSE) licensed.
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwebkitty%2Fsearchbox.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwebkitty%2Fsearchbox?ref=badge_large)
