@@ -1,6 +1,15 @@
-# Searchbox
+<h1 align=center>Searchbox</h1>
 
-> A search box supporting multiple user-defined keywords (filters, variables).
+<p align=center>
+🕹 <a href="https://stuchl4n3k.net">stuchl4n3k.net</a> | 💻 <a href="https://github.com/stuchl4n3k">stuchl4n3k</a> | 🐦 <a href="https://twitter.com/stuchl4n3k">@stuchl4n3k</a>
+</p>
+
+<p align=center>
+<a href="https://circleci.com/gh/webkitty/searchbox"><img src="https://img.shields.io/circleci/build/github/webkitty/searchbox?style=flat-square"></a>
+<a href="https://github.com/webkitty/searchbox/blob/master/LICENSE"><img src="https://img.shields.io/github/license/webkitty/searchbox?style=flat-square"></a>
+</p>
+
+A search box supporting multiple user-defined keywords (filters, variables).
 
 ## Features
 
@@ -27,3 +36,8 @@ const formula = searchbox.parse(inputText, {keywords});
 ```
 
 Please note that only **case-sensitive** keyword matching is currently supported.
+
+## 📝 License
+
+Copyright © 2019 [stuchl4n3k](https://github.com/stuchl4n3k).
+This project is [MIT](LICENSE) licensed.
