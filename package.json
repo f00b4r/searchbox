@@ -1,4 +1,22 @@
 {
+  "name": "@webkitty/searchbox",
+  "version": "0.0.1",
+  "author": {
+    "name": "stuchl4n3k",
+    "url": "https://stuchl4n3k.net",
+    "email": "stuchl4n3k@gmail.com"
+  },
+  "description": "A search box supporting multiple user-defined keywords.",
+  "keywords": ["search", "keyword", "lexer", "parser"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webkitty/searchbox"
+  },
+  "bugs": {
+    "url": "https://github.com/webkitty/searchbox/issues"
+  },
+  "types": "src/types.d.ts",
   "scripts": {
     "postinstall": "tsc",
     "watch": "tsc --watch",
