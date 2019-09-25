@@ -1,6 +1,6 @@
 {
   "name": "@webkitty/searchbox",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": {
     "name": "stuchl4n3k",
     "url": "https://stuchl4n3k.net",
@@ -16,6 +16,7 @@
   "bugs": {
     "url": "https://github.com/webkitty/searchbox/issues"
   },
+  "main": "dist/index.js",
   "types": "src/types.d.ts",
   "scripts": {
     "build": "tsc",
