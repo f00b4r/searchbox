@@ -9,6 +9,12 @@ interface SearchBoxOptions {
      * a fulltext search.
      */
     keywords?: string[],
+
+    // @todo: not supported yet in Moo https://github.com/no-context/moo/pull/122
+    // /**
+    //  * Whether the keywords search is case-sensitive.
+    //  */
+    // caseSensitive?: false,
 }
 
 /**

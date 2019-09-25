@@ -5,17 +5,22 @@ const TOKEN_KEY = 'KEY';
 const TOKEN_VALUE = 'VALUE';
 const TOKEN_FULLTEXT = 'FULLTEXT';
 
-export default {
+export {parse}
 
-    parse: function(input: string, opts?: SearchBoxOptions) {
-        const keywords = opts ? (opts.keywords || []) : [];
+/**
+ * Parses a given user input into a structured formula.
+ *
+ * @param input searchbox input to parse
+ * @param opts searchbox options
+ */
+function parse(input: string, opts?: SearchBoxOptions): Formula {
+    const keywords = opts ? (opts.keywords || []) : [];
 
-        const parser = new Parser();
-        const lexer = new Lexer(keywords, parser.parse.bind(parser));
+    const parser = new Parser();
+    const lexer = new Lexer(keywords, parser.parse.bind(parser));
 
-        lexer.lex(input);
-        return parser.getFormula();
-    }
+    lexer.lex(input);
+    return parser.getFormula();
 }
 
 /**
@@ -62,13 +67,8 @@ class Parser {
         return this.query;
     }
 
-    public reset() {
-        this.query = new Formula();
-    }
-
     public parse(token: LexerToken): void {
-        console.debug(`Parsing token #${token.type}# : #${token.value}#`);
-
+        // console.debug(`Parsing token #${token.type}# : #${token.value}#`);
         switch (token.type) {
             case TOKEN_OP:
                 this.lastOp = token.value;
@@ -104,17 +104,23 @@ class Lexer {
     private readonly handler: LexerTokenHandler;
 
     public constructor(keywords: string[], handler: LexerTokenHandler) {
-        const operators = ['-'];
         this.handler = handler;
 
-        // Define our grammar.
-        const WS = /[ \t]+/;
-        const OP = new RegExp(`${operators.join('|')}(?=(?:${keywords.join('|')}))`);
-        const SEP = /:/;
-        const WORD = /[\w]+/;
-        const WORDS_SQ = /'.*?'/;
-        const WORDS_DQ = /".*?"/;
-        const NON_WORD = /\W+/;
+        // Fulltext keyword is omnipresent.
+        if (!keywords.includes('fulltext')) keywords.push('fulltext');
+
+        // Define supported operators.
+        const operators = ['-'];
+
+        // Define our (unicode) grammar.
+        const WS = /[ \t]+/u;
+        const OP = new RegExp(`${operators.join('|')}(?=(?:${keywords.join('|')}))`, 'u');
+        const SEP = /:/u;
+        const KEY = new RegExp(keywords.join('|'), 'u');
+        const WORD = new RegExp("(?<=^|[ \f\n\r\t\v.,'\"+\\-!?:]+)(?:.+?)(?=$|[ \f\n\r\t\v.,'\"\+\\-!?:;]+)", "u")
+        const WORDS_SQ = /'.*?'/u;
+        const WORDS_DQ = /".*?"/u;
+        const NON_WORD = /\W+?/u;
 
         // Define stateful grammar rules.
         this.lexer = MooLexer.states({
@@ -123,16 +129,16 @@ class Lexer {
                 WS: WS,
                 [TOKEN_OP]: {match: OP},
                 [TOKEN_KEY]: {
-                    match: keywords,
+                    match: KEY,
                     type: MooLexer.keywords({KEY: keywords}),
                     push: 'pair'
                 },
                 [TOKEN_FULLTEXT]: [
                     {match: WORDS_SQ, value: x => x.slice(1, -1)},
                     {match: WORDS_DQ, value: x => x.slice(1, -1)},
-                    {match: WORD},
-                    {match: NON_WORD, lineBreaks: true},
+                    {match: WORD, lineBreaks: true},
                 ],
+                NON_WORD: {match: NON_WORD, lineBreaks: true},
             },
 
             // Pair state: If a keyword was matched, look for the value and move back to init.
@@ -141,7 +147,7 @@ class Lexer {
                 [TOKEN_VALUE]: [
                     {match: WORDS_SQ, value: x => x.slice(1, -1), pop: 1},
                     {match: WORDS_DQ, value: x => x.slice(1, -1), pop: 1},
-                    {match: WORD, pop: 1},
+                    {match: WORD, lineBreaks: true, pop: 1},
                 ],
             },
         });

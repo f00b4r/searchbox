@@ -12,7 +12,7 @@
     "rootDir": "."
   },
   "dependencies": {
-    "moo": "^0.5.0"
+    "moo": "github:no-context/moo#master"
   },
   "devDependencies": {
     "@types/moo": "^0.5.0",

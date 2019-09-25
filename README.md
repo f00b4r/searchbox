@@ -6,13 +6,14 @@
 
 - [x] Parses user input string into a structured formula of literals.
 - [x] Supports literal negation.
+- [x] Supports unicode.
 - [ ] Case-sensitivity is configurable.
 - [ ] Operators are configurable.
 
 ## Usage
 
 ```typescript
-import searchbox from '@webkitty/searchbox';
+import * as searchbox from '@webkitty/searchbox';
 
 const inputText = 'Never take title:raisins from -author:rabbits';
 const keywords = ['title', 'author'];
