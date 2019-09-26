@@ -1,9 +1,12 @@
 import MooLexer = require('moo');
 
-const TOKEN_OP = 'OP';
-const TOKEN_KEY = 'KEY';
-const TOKEN_VALUE = 'VALUE';
-const TOKEN_FULLTEXT = 'FULLTEXT';
+const TYPE_OP = 'OP';
+const TYPE_SEP = 'SEP';
+const TYPE_KEY = 'KEY';
+const TYPE_WORD = 'WORD';
+
+const TYPE_CHAIN_PAIR = [TYPE_KEY, TYPE_SEP, TYPE_WORD].join('|');
+const TYPE_CHAIN_OP_PAIR = [TYPE_OP, TYPE_KEY, TYPE_SEP, TYPE_WORD].join('|');
 
 export {parse}
 
@@ -17,10 +20,10 @@ function parse(input: string, opts?: SearchBoxOptions): Formula {
   const keywords = opts ? (opts.keywords || []) : [];
 
   const parser = new Parser();
-  const lexer = new Lexer(keywords, parser.parse.bind(parser));
+  const lexer = new Lexer(keywords, parser.addToken.bind(parser));
 
   lexer.lex(input);
-  return parser.getFormula();
+  return parser.parse();
 }
 
 /**
@@ -59,39 +62,51 @@ class Formula {
  */
 class Parser {
 
-  private query: Formula = new Formula();
-  private lastOp?: string;
-  private lastKey?: string;
+  private formula: Formula = new Formula();
+  private tokens: LexerToken[] = [];
 
-  public getFormula(): Formula {
-    return this.query;
+  public addToken(token: LexerToken): void {
+    // console.debug(`Parsing token #${token.type}# : #${token.value}#`);
+    this.tokens.push(token);
   }
 
-  public parse(token: LexerToken): void {
-    // console.debug(`Parsing token #${token.type}# : #${token.value}#`);
-    switch (token.type) {
-      case TOKEN_OP:
-        this.lastOp = token.value;
-        break;
+  public parse(): Formula {
+    let tupleSize: number;
 
-      case TOKEN_KEY:
-        this.lastKey = token.value;
-        break;
+    for (let i = 0; i < this.tokens.length; i += tupleSize) {
+      const t1 = this.tokens[i];
+      const t2 = i + 1 < this.tokens.length ? this.tokens[i + 1] : undefined;
+      const t3 = i + 2 < this.tokens.length ? this.tokens[i + 2] : undefined;
+      const t4 = i + 3 < this.tokens.length ? this.tokens[i + 3] : undefined;
 
-      case TOKEN_VALUE:
-        this.append(this.lastKey!, token.value, this.lastOp);
-        this.lastOp = undefined;
-        this.lastKey = undefined;
-        break;
+      tupleSize = this.parseTuple(t1, t2, t3, t4);
+    }
 
-      case TOKEN_FULLTEXT:
-        this.append('fulltext', token.value);
-        break;
+    return this.formula;
+  }
+
+  private parseTuple(t1: LexerToken, t2?: LexerToken, t3?: LexerToken, t4?: LexerToken): number {
+    const t1Type = t1.type;
+    const t2Type = t2 ? t2.type : undefined;
+    const t3Type = t3 ? t3.type : undefined;
+    const t4Type = t4 ? t4.type : undefined;
+
+    const typeChain = [t1Type, t2Type, t3Type, t4Type].join('|');
+
+    if (typeChain.startsWith(TYPE_CHAIN_PAIR)) {
+      this.append(t1.value, t3!.value);
+      return 3;
+    } else if (typeChain.startsWith(TYPE_CHAIN_OP_PAIR)) {
+      this.append(t2!.value, t4!.value, t1.value);
+      return 4;
+    } else {
+      this.append('fulltext', t1.value);
+      return 1;
     }
   }
 
   private append(key: string, value: string, op?: string) {
-    this.query.append(key, value, op);
+    this.formula.append(key, value, op);
   }
 }
 
@@ -112,44 +127,26 @@ class Lexer {
     // Define supported operators.
     const operators = ['-'];
 
-    // Define our (unicode) grammar.
+    // Define our (unicode) vocabulary.
     const WS = /[ \t]+/u;
     const OP = new RegExp(`${operators.join('|')}(?=(?:${keywords.join('|')}))`, 'u');
     const SEP = /:/u;
-    const KEY = new RegExp(keywords.join('|'), 'u');
-    const WORD = new RegExp("(?<=^|[ \f\n\r\t\v.,'\"+\\-!?:]+)(?:.+?)(?=$|[ \f\n\r\t\v.,'\"\+\\-!?:;]+)", "u")
+    const WORD = new RegExp("(?<=^|[ \f\n\r\t\v.,'\"+\\-!?:]+)(?:.+?)(?=$|[ \f\n\r\t\v.,'\"\+\\-!?:;]+)", "u");
     const WORDS_SQ = /'.*?'/u;
     const WORDS_DQ = /".*?"/u;
     const NON_WORD = /\W+?/u;
 
-    // Define stateful grammar rules.
-    this.lexer = MooLexer.states({
-      // Initial state: primarily we match keywords and operators here. The rest is fulltext.
-      init: {
-        WS: WS,
-        [TOKEN_OP]: {match: OP},
-        [TOKEN_KEY]: {
-          match: KEY,
-          type: MooLexer.keywords({KEY: keywords}),
-          push: 'pair'
-        },
-        [TOKEN_FULLTEXT]: [
-          {match: WORDS_SQ, value: x => x.slice(1, -1)},
-          {match: WORDS_DQ, value: x => x.slice(1, -1)},
-          {match: WORD, lineBreaks: true},
-        ],
-        NON_WORD: {match: NON_WORD, lineBreaks: true},
-      },
-
-      // Pair state: If a keyword was matched, look for the value and move back to init.
-      pair: {
-        SEP: {match: SEP},
-        [TOKEN_VALUE]: [
-          {match: WORDS_SQ, value: x => x.slice(1, -1), pop: 1},
-          {match: WORDS_DQ, value: x => x.slice(1, -1), pop: 1},
-          {match: WORD, lineBreaks: true, pop: 1},
-        ],
-      },
+    // Define grammar rules.
+    this.lexer = MooLexer.compile({
+      WS: WS,
+      [TYPE_OP]: {match: OP},
+      [TYPE_SEP]: {match: SEP},
+      [TYPE_WORD]: [
+        {match: WORDS_SQ, value: x => x.slice(1, -1)},
+        {match: WORDS_DQ, value: x => x.slice(1, -1)},
+        {match: WORD, type: MooLexer.keywords({[TYPE_KEY]: keywords})},
+      ],
+      NON_WORD: {match: NON_WORD, lineBreaks: true},
     });
   }
 
@@ -159,10 +156,10 @@ class Lexer {
 
     while (token !== undefined) {
       switch (token.type) {
-        case TOKEN_OP:
-        case TOKEN_KEY:
-        case TOKEN_VALUE:
-        case TOKEN_FULLTEXT:
+        case TYPE_OP:
+        case TYPE_SEP:
+        case TYPE_KEY:
+        case TYPE_WORD:
           this.emitToken(token.type, token.value);
           break;
       }
