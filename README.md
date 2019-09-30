@@ -16,7 +16,6 @@ A search box supporting multiple user-defined keywords (filters, variables).
 - [x] Parses user input string into a structured formula of literals.
 - [x] Supports literal negation.
 - [x] Supports unicode.
-- [ ] Case-sensitivity is configurable.
 - [ ] Operators are configurable.
 
 ## Usage

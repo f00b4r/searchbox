@@ -128,7 +128,7 @@ test('parse query without keywords', () => {
 });
 
 test('parse query with keyword-like words', () => {
-  const inputText = 'Class is not class:and not classname nor nameclass';
+  const inputText = 'Class:is not class:and not classname nor nameclass';
   const keywords = ['class'];
 
   const formula = searchbox.parse(inputText, {keywords});
@@ -138,9 +138,9 @@ test('parse query with keyword-like words', () => {
 
   expect(literals[0].key).toBe('fulltext');
   expect(literals[0].op).toBe(undefined);
-  expect(literals[0].values).toHaveLength(7);
+  expect(literals[0].values).toHaveLength(8);
   expect(literals[0].values).toStrictEqual(expect.arrayContaining([
-    "Class", "is", "not", "not", "classname", "nor", "nameclass"
+    "Class", ":", "is", "not", "not", "classname", "nor", "nameclass"
   ]));
 
   expect(literals[1].key).toBe('class');
