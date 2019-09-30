@@ -9,7 +9,7 @@
     "target": "esnext",
     "module": "commonjs",
     "outDir": "dist",
-    "sourceMap": false,
+    "sourceMap": true,
     "declaration": true,
     "typeRoots": [
       "./node_modules/@types"

@@ -1,4 +1,4 @@
-const searchbox = require('./../../dist');
+const searchbox = require('./../../src/index');
 
 test('parse simple query', () => {
   const inputText = 'Never take title:raisins from -author:rabbits';
@@ -66,7 +66,7 @@ test('parse query with all keywords and operators', () => {
 
 test('parse one word', () => {
   const inputText = 'skedaddle';
-  const keywords = [];
+  const keywords: string[] = [];
 
   const formula = searchbox.parse(inputText, {keywords});
   const literals = formula.getLiterals();
@@ -218,7 +218,7 @@ test('parse query with exact match', () => {
 
 test('parse empty query', () => {
   const inputText = '';
-  const keywords = [];
+  const keywords: string[] = [];
 
   const formula = searchbox.parse(inputText, {keywords});
   const literals = formula.getLiterals();
