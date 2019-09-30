@@ -6,6 +6,7 @@
 
 <p align=center>
 <a href="https://circleci.com/gh/webkitty/searchbox"><img src="https://img.shields.io/circleci/build/github/webkitty/searchbox?style=flat-square"></a>
+<a href="https://codecov.io/gh/webkitty/searchbox"><img src="https://img.shields.io/codecov/c/github/webkitty/searchbox?style=flat-square"></a>
 <a href="https://github.com/webkitty/searchbox/blob/master/LICENSE"><img src="https://img.shields.io/github/license/webkitty/searchbox?style=flat-square"></a>
 </p>
 
