@@ -7,7 +7,12 @@
     "email": "stuchl4n3k@gmail.com"
   },
   "description": "A search box supporting multiple user-defined keywords.",
-  "keywords": ["search", "keyword", "lexer", "parser"],
+  "keywords": [
+    "search",
+    "keyword",
+    "lexer",
+    "parser"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -33,7 +38,7 @@
   },
   "dependencies": {
     "codecov": "^3.6.1",
-    "moo": "github:no-context/moo#master"
+    "moo": "^0.5.1"
   },
   "devDependencies": {
     "@types/moo": "^0.5.0",
