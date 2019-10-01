@@ -8,7 +8,12 @@ const TYPE_WORD = 'WORD';
 const TYPE_CHAIN_PAIR = [TYPE_KEY, TYPE_SEP, TYPE_WORD].join('|');
 const TYPE_CHAIN_OP_PAIR = [TYPE_OP, TYPE_KEY, TYPE_SEP, TYPE_WORD].join('|');
 
-export {parse}
+const KEY_UNDEFINED = '_';
+
+export {
+  KEY_UNDEFINED,
+  parse,
+}
 
 /**
  * Parses a given user input into a structured formula.
@@ -100,7 +105,7 @@ class Parser {
       this.append(t2!.value, t4!.value, t1.value);
       return 4;
     } else {
-      this.append('fulltext', t1.value);
+      this.append(KEY_UNDEFINED, t1.value);
       return 1;
     }
   }
@@ -120,9 +125,6 @@ class Lexer {
 
   public constructor(keywords: string[], handler: LexerTokenHandler) {
     this.handler = handler;
-
-    // Fulltext keyword is omnipresent.
-    if (!keywords.includes('fulltext')) keywords.push('fulltext');
 
     // Define supported operators.
     const operators = ['-'];

@@ -9,7 +9,7 @@ test('parse simple query', () => {
 
   expect(literals).toHaveLength(3);
 
-  expect(literals[0].key).toBe('fulltext');
+  expect(literals[0].key).toBe('_');
   expect(literals[0].op).toBe(undefined);
   expect(literals[0].values).toHaveLength(3);
   expect(literals[0].values).toStrictEqual(expect.arrayContaining([
@@ -36,7 +36,7 @@ test('parse query with all keywords and operators', () => {
 
   expect(literals).toHaveLength(5);
 
-  expect(literals[0].key).toBe('fulltext');
+  expect(literals[0].key).toBe('_');
   expect(literals[0].op).toBe(undefined);
   expect(literals[0].values).toHaveLength(6);
   expect(literals[0].values).toStrictEqual(expect.arrayContaining([
@@ -73,7 +73,7 @@ test('parse one word', () => {
 
   expect(literals).toHaveLength(1);
 
-  expect(literals[0].key).toBe('fulltext');
+  expect(literals[0].key).toBe('_');
   expect(literals[0].op).toBe(undefined);
   expect(literals[0].values).toHaveLength(1);
   expect(literals[0].values).toStrictEqual(expect.arrayContaining(["skedaddle"]));
@@ -88,7 +88,7 @@ test('parse one keyword', () => {
 
   expect(literals).toHaveLength(1);
 
-  expect(literals[0].key).toBe('fulltext');
+  expect(literals[0].key).toBe('_');
   expect(literals[0].op).toBe(undefined);
   expect(literals[0].values).toHaveLength(1);
   expect(literals[0].values).toStrictEqual(expect.arrayContaining(["skedaddle"]));
@@ -103,7 +103,7 @@ test('parse one keyword with separator', () => {
 
   expect(literals).toHaveLength(1);
 
-  expect(literals[0].key).toBe('fulltext');
+  expect(literals[0].key).toBe('_');
   expect(literals[0].op).toBe(undefined);
   expect(literals[0].values).toHaveLength(2);
   expect(literals[0].values).toStrictEqual(expect.arrayContaining(["skedaddle", ":"]));
@@ -117,13 +117,13 @@ test('parse query without keywords', () => {
 
   expect(literals).toHaveLength(1);
 
-  expect(literals[0].key).toBe('fulltext');
+  expect(literals[0].key).toBe('_');
   expect(literals[0].op).toBe(undefined);
-  expect(literals[0].values).toHaveLength(18);
+  expect(literals[0].values).toHaveLength(20);
   expect(literals[0].values).toStrictEqual(expect.arrayContaining([
-    "Foo", "bar", "title", ":", "hello", "author", ":", "joe", "-text", ":",
+    "Foo", "bar", "title", ":", "hello", "author", ":", "joe", "-", "text", ":",
     "foo bar", "text", ":", "baz", "perex", ":", "naughty:naughty:monkey",
-    "-trailer"
+    "-", "trailer"
   ]));
 });
 
@@ -136,7 +136,7 @@ test('parse query with keyword-like words', () => {
 
   expect(literals).toHaveLength(2);
 
-  expect(literals[0].key).toBe('fulltext');
+  expect(literals[0].key).toBe('_');
   expect(literals[0].op).toBe(undefined);
   expect(literals[0].values).toHaveLength(8);
   expect(literals[0].values).toStrictEqual(expect.arrayContaining([
@@ -169,34 +169,34 @@ test('parse query with repeated keyword', () => {
 });
 
 test('parse query with explicit fulltext keyword', () => {
-  const inputText = 'Never take fulltext:raisins from rabbits';
+  const inputText = 'Never take _:raisins from rabbits';
 
   const formula = searchbox.parse(inputText);
   const literals = formula.getLiterals();
 
   expect(literals).toHaveLength(1);
 
-  expect(literals[0].key).toBe('fulltext');
+  expect(literals[0].key).toBe('_');
   expect(literals[0].op).toBe(undefined);
-  expect(literals[0].values).toHaveLength(5);
+  expect(literals[0].values).toHaveLength(7);
   expect(literals[0].values).toStrictEqual(expect.arrayContaining([
-    "Never", "take", "raisins", "from", "rabbits"
+    "Never", "take", "_", ":", "raisins", "from", "rabbits"
   ]));
 });
 
 test('parse query with explicit fulltext keyword and exact match', () => {
-  const inputText = 'Never take fulltext:"raisins from rabbits"';
+  const inputText = 'Never take _:"raisins from rabbits"';
 
   const formula = searchbox.parse(inputText);
   const literals = formula.getLiterals();
 
   expect(literals).toHaveLength(1);
 
-  expect(literals[0].key).toBe('fulltext');
+  expect(literals[0].key).toBe('_');
   expect(literals[0].op).toBe(undefined);
-  expect(literals[0].values).toHaveLength(3);
+  expect(literals[0].values).toHaveLength(5);
   expect(literals[0].values).toStrictEqual(expect.arrayContaining([
-    "Never", "take", "raisins from rabbits"
+    "Never", "take", "_", ":", "raisins from rabbits"
   ]));
 });
 
@@ -208,7 +208,7 @@ test('parse query with exact match', () => {
 
   expect(literals).toHaveLength(1);
 
-  expect(literals[0].key).toBe('fulltext');
+  expect(literals[0].key).toBe('_');
   expect(literals[0].op).toBe(undefined);
   expect(literals[0].values).toHaveLength(2);
   expect(literals[0].values).toStrictEqual(expect.arrayContaining([
@@ -236,7 +236,7 @@ test('parse utf8 input', () => {
 
   expect(literals).toHaveLength(3);
 
-  expect(literals[0].key).toBe('fulltext');
+  expect(literals[0].key).toBe('_');
   expect(literals[0].op).toBe(undefined);
   expect(literals[0].values).toHaveLength(2);
   expect(literals[0].values).toStrictEqual(expect.arrayContaining([
@@ -268,7 +268,7 @@ test('parse unicode input', () => {
 
   expect(literals).toHaveLength(3);
 
-  expect(literals[0].key).toBe('fulltext');
+  expect(literals[0].key).toBe('_');
   expect(literals[0].op).toBe(undefined);
   expect(literals[0].values).toHaveLength(2);
   expect(literals[0].values).toStrictEqual(expect.arrayContaining([

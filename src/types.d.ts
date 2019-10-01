@@ -6,7 +6,8 @@ interface SearchBoxOptions {
    * Keywords (variables) to look for in the user input.
    *
    * By default no keywords are defined and everything is considered
-   * a fulltext search.
+   * "undefined" (aka fulltext) search and will be accessible in the
+   * result under {@link KEY_UNDEFINED}.
    */
   keywords?: string[],
 }

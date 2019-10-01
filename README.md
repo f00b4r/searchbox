@@ -30,12 +30,12 @@ const keywords = ['title', 'author'];
 const formula = searchbox.parse(inputText, {keywords});
 
 // Formula:
-//  fulltext: [Never,take,from]
-//  title: [raisins]
-//  -author: [rabbits]
+//  _: [Never,take,from]	// words not matching any keyword (aka fulltext)
+//  title: [raisins]		// "title" keyword match
+//  -author: [rabbits]		// "author" keyword match with NOT operator ("-")
 ```
 
-Please note that only **case-sensitive** keyword matching is currently supported.
+Please note that only **case-sensitive** keyword matching is supported.
 
 ## 📝 License
 
