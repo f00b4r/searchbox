@@ -1,7 +1,7 @@
 <h1 align=center>Searchbox</h1>
 
 <p align=center>
-🕹 <a href="https://stuchl4n3k.net">stuchl4n3k.net</a> | 💻 <a href="https://github.com/stuchl4n3k">stuchl4n3k</a> | 🐦 <a href="https://twitter.com/stuchl4n3k">@stuchl4n3k</a>
+🌐 <a href="https://stuchl4n3k.net">stuchl4n3k.net</a> | 💻 <a href="https://github.com/stuchl4n3k">stuchl4n3k</a> | 🐦 <a href="https://twitter.com/stuchl4n3k">@stuchl4n3k</a>
 </p>
 
 <p align=center>
