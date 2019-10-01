@@ -9,9 +9,11 @@ const TYPE_CHAIN_PAIR = [TYPE_KEY, TYPE_SEP, TYPE_WORD].join('|');
 const TYPE_CHAIN_OP_PAIR = [TYPE_OP, TYPE_KEY, TYPE_SEP, TYPE_WORD].join('|');
 
 const KEY_UNDEFINED = '_';
+const OP_NOT = '-';
 
 export {
   KEY_UNDEFINED,
+  OP_NOT,
   parse,
 }
 
@@ -127,7 +129,7 @@ class Lexer {
     this.handler = handler;
 
     // Define supported operators.
-    const operators = ['-'];
+    const operators = [OP_NOT];
 
     // Define our (unicode) vocabulary.
     const WS = /[ \t]+/u;
