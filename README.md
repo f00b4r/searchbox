@@ -10,7 +10,7 @@
 <a href="https://github.com/webkitty/searchbox/blob/master/LICENSE"><img src="https://img.shields.io/github/license/webkitty/searchbox?style=flat-square"></a>
 </p>
 
-A search box supporting multiple user-defined keywords (filters, variables).
+Text input augmented with Lexer magic✨ to support advanced search features. Searchbox supports multiple user-defined keywords (filters, variables) and also _NOT_ operator.
 
 ## Features
 
