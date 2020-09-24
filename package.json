@@ -22,7 +22,7 @@
     "url": "https://github.com/webkitty/searchbox/issues"
   },
   "main": "dist/index.js",
-  "types": "src/types.d.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch",

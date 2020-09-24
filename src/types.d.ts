@@ -1,7 +1,7 @@
 /**
  * Search box configuration options.
  */
-interface SearchBoxOptions {
+export interface SearchBoxOptions {
   /**
    * Keywords (variables) to look for in the user input.
    *
@@ -15,7 +15,7 @@ interface SearchBoxOptions {
 /**
  * Search literal is a triplet of key, value and an optional operator.
  */
-interface Literal {
+export interface Literal {
   key: string,
   values: string[],
   op?: Operator,
@@ -24,12 +24,12 @@ interface Literal {
 /**
  * Operator is usually a single-char prefixing a literal.
  */
-type Operator = string;
+export type Operator = string;
 
 /**
  * Lexer token is a smallest bit of information that a Lexer can produce.
  */
-interface LexerToken {
+export interface LexerToken {
   type: string,
   value: string,
 }
@@ -37,4 +37,4 @@ interface LexerToken {
 /**
  * Callback for consuming lexer tokens.
  */
-type LexerTokenHandler = (token: LexerToken) => void;
+export type LexerTokenHandler = (token: LexerToken) => void;

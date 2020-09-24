@@ -1,4 +1,6 @@
 import MooLexer = require('moo');
+import {LexerToken, LexerTokenHandler, Literal, SearchBoxOptions} from './types';
+export * from './types';
 
 const TYPE_OP = 'OP';
 const TYPE_SEP = 'SEP';
@@ -8,14 +10,8 @@ const TYPE_WORD = 'WORD';
 const TYPE_CHAIN_PAIR = [TYPE_KEY, TYPE_SEP, TYPE_WORD].join('|');
 const TYPE_CHAIN_OP_PAIR = [TYPE_OP, TYPE_KEY, TYPE_SEP, TYPE_WORD].join('|');
 
-const KEY_UNDEFINED = '_';
-const OP_NOT = '-';
-
-export {
-  KEY_UNDEFINED,
-  OP_NOT,
-  parse,
-}
+export const KEY_UNDEFINED = '_';
+export const OP_NOT = '-';
 
 /**
  * Parses a given user input into a structured formula.
@@ -23,7 +19,7 @@ export {
  * @param input searchbox input to parse
  * @param opts searchbox options
  */
-function parse(input: string, opts?: SearchBoxOptions): Formula {
+export function parse(input: string, opts?: SearchBoxOptions): Formula {
   const keywords = opts ? (opts.keywords || []) : [];
 
   const parser = new Parser();
@@ -36,7 +32,7 @@ function parse(input: string, opts?: SearchBoxOptions): Formula {
 /**
  * Formula contains a list of literals.
  */
-class Formula {
+export class Formula {
 
   private literals: Literal[] = [];
 
