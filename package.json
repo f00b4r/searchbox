@@ -1,6 +1,6 @@
 {
   "name": "@webkitty/searchbox",
-  "version": "0.0.5",
+  "version": "1.0.0",
   "author": {
     "name": "stuchl4n3k",
     "url": "https://stuchl4n3k.net",
@@ -41,15 +41,15 @@
     "rootDir": "."
   },
   "dependencies": {
-    "codecov": "^3.6.1",
     "moo": "^0.5.1"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.18",
-    "@types/moo": "^0.5.0",
-    "@types/node": "^12.7.5",
+    "@types/jest": "^24.9.1",
+    "@types/moo": "^0.5.3",
+    "@types/node": "^12.12.62",
+    "codecov": "^3.7.2",
     "jest": "^24.9.0",
-    "ts-jest": "^24.1.0",
-    "typescript": "^3.5.3"
+    "ts-jest": "^24.3.0",
+    "typescript": "^3.9.7"
   }
 }
